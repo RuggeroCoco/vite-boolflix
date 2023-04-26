@@ -15,6 +15,7 @@ export default {
     performSearch() {
       if (this.store.searchKey) {
         this.getMovies();
+        this.getSeries();
       }
     },
     getMovies() {
@@ -27,6 +28,21 @@ export default {
         })
         .then((resp) => {
           this.store.movies = resp.data.results;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getSeries() {
+      axios
+        .get(`${this.store.apiBaseUrl}/search/tv`, {
+          params: {
+            api_key: this.store.apiKey,
+            query: this.store.searchKey,
+          },
+        })
+        .then((resp) => {
+          this.store.series = resp.data.results;
         })
         .catch((err) => {
           console.log(err);
