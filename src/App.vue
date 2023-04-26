@@ -1,9 +1,44 @@
 <script>
-export default {};
+import axios from "axios";
+import { store } from "./store";
+import AppHeader from "./components/AppHeader.vue";
+import AppMain from "./components/AppMain.vue";
+
+export default {
+  components: { AppHeader, AppMain },
+  data() {
+    return {
+      store,
+    };
+  },
+  methods: {
+    performSearch() {
+      if (this.store.searchKey) {
+        this.getMovies();
+      }
+    },
+    getMovies() {
+      axios
+        .get(`${this.store.apiBaseUrl}/search/movie`, {
+          params: {
+            api_key: this.store.apiKey,
+            query: this.store.searchKey,
+          },
+        })
+        .then((resp) => {
+          this.store.movies = resp.data.results;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+};
 </script>
 
 <template>
-  <h1>Ciao</h1>
+  <AppHeader @search="performSearch" />
+  <AppMain />
 </template>
 
 <style scoped></style>
