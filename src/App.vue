@@ -19,6 +19,8 @@ export default {
       }
     },
     getMovies() {
+      this.store.loading = true;
+      console.log('loading');
       axios
         .get(`${this.store.apiBaseUrl}/search/movie`, {
           params: {
@@ -27,13 +29,19 @@ export default {
           },
         })
         .then((resp) => {
+          console.log('movies arrivati');
           this.store.movies = resp.data.results;
         })
         .catch((err) => {
           console.log(err);
-        });
+        }).finally(() => {
+          this.store.loading = false;
+          console.log('stop loading');
+        })
     },
     getSeries() {
+      this.store.loading = true;
+      console.log('loading');
       axios
         .get(`${this.store.apiBaseUrl}/search/tv`, {
           params: {
@@ -42,11 +50,14 @@ export default {
           },
         })
         .then((resp) => {
+          console.log('serie arrivati');
           this.store.series = resp.data.results;
         })
         .catch((err) => {
           console.log(err);
-        });
+        }).finally(() => {
+          console.log('stop loading');
+        })
     },
   },
 };
@@ -57,4 +68,6 @@ export default {
   <AppMain />
 </template>
 
-<style scoped></style>
+<style lang="scss">
+@use "./styles/general.scss";
+</style>

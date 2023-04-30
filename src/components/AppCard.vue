@@ -29,6 +29,9 @@ export default {
         ? this.cardObj.original_title
         : this.cardObj.original_name;
     },
+    objVote() {
+      return Math.ceil(this.cardObj.vote_average / 2);
+    }
   },
 };
 </script>
@@ -44,9 +47,10 @@ export default {
       <img v-else :src="getImgPath(this.getOriginalLanguagePath)" alt="" />
     </div>
     <p>{{ cardObj.vote_average }}</p>
-    <!-- <div>
-      <span v-for="num in 4" :index="num"> S </span> 
-    </div> -->
+    <div>
+      {{ objVote }}
+      <i v-for="num in 5" :key="num" class="fa-star" :class="num <= objVote ? 'fa-solid' : 'fa-regular'"></i>
+    </div>
   </div>
 </template>
 
